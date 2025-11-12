@@ -1,5 +1,5 @@
 # Nav-item - 个人导航站
-
+教程:https://www.youtube.com/watch?v=AEXj3VR2LMY
 ## 项目简介
 
 一个现代化的导航网站项目，提供简洁美观的导航界面和强大的后台管理系统,快速访问常用网站和工具。
@@ -195,6 +195,7 @@ bash <(curl -Ls https://github.com/eooce/nav-item/releases/download/ct8-and-serv
 ---
 
 ⭐ 如果这个项目对你有帮助，请给它一个星标！ 
+
 
 
 
