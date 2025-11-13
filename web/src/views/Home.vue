@@ -341,7 +341,7 @@ function handleLogoError(event) {
 
 .home-container {
   min-height: 95vh;
-  background-image: url('https://main.ssss.nyc.mn/background.webp');
+  background-image: url('https://raw.githubusercontent.com/kystor/nav-item/refs/heads/main/web/public/background.webp');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -736,4 +736,5 @@ function handleLogoError(event) {
     gap: 20px;
   }
 }
+
 </style> 
