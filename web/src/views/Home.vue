@@ -341,7 +341,7 @@ function handleLogoError(event) {
 
 .home-container {
   min-height: 95vh;
-  background-image: url('https://raw.githubusercontent.com/kystor/nav-item/refs/heads/main/web/public/background.webp');
+  background-image: url('https://ghproxy.eooce.xx.kg/https://raw.githubusercontent.com/kystor/nav-item/main/web/public/background.webp');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -738,3 +738,4 @@ function handleLogoError(event) {
 }
 
 </style> 
+
