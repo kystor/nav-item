@@ -46,9 +46,7 @@
     </aside>
     <main class="admin-main">
       <div class="admin-header">
-        <button class="menu-toggle" @click="toggleSider">
-          &#9776;
-        </button>
+        <button class="menu-toggle" @click="toggleSider">&#9776;</button>
         <div class="header-title">{{ pageTitle }}</div>
         <div class="header-actions">
           <span class="home-icon" @click="goHome" title="进入主页">
@@ -125,13 +123,37 @@ onMounted(() => {
   const token = localStorage.getItem('token');
   isLoggedIn.value = !!token;
   if (isLoggedIn.value) {
-    // 拉取用户信息
     fetchLastLoginInfo();
   }
 });
+
+// token失效统一处理
+function handleTokenInvalid() {
+  localStorage.removeItem('token');
+  isLoggedIn.value = false;
+  username.value = '';
+  password.value = '';
+  loginError.value = '登录已过期，请重新登录';
+}
+
+// 封装接口请求函数，统一处理401
+async function apiFetch(url, options = {}) {
+  const token = localStorage.getItem('token');
+  if (!options.headers) options.headers = {};
+  if (token) options.headers['Authorization'] = `Bearer ${token}`;
+  
+  const res = await fetch(url, options);
+  if (res.status === 401) {
+    handleTokenInvalid();
+    throw new Error('Token失效');
+  }
+  return res;
+}
+
+// 获取用户信息
 async function fetchLastLoginInfo() {
   try {
-    const res = await fetch('/api/users/me', { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
+    const res = await apiFetch('/api/users/me');
     if (res.ok) {
       const data = await res.json();
       lastLoginTime.value = data.last_login_time || '';
@@ -167,11 +189,7 @@ async function handleLogin() {
 }
 
 function logout() {
-  localStorage.removeItem('token');
-  isLoggedIn.value = false;
-  username.value = '';
-  password.value = '';
-  loginError.value = '';
+  handleTokenInvalid();
 }
 
 function goHome() {
@@ -615,4 +633,5 @@ function closeSider() {
 .menu-toggle {
   display: none;
 }
+
 </style> 
