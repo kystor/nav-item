@@ -1,41 +1,39 @@
 <template>
-  <div class="admin-layout">
-    <!-- 登录覆盖层 -->
-    <div v-if="!isLoggedIn" class="login-container">
-      <div class="login-card">
-        <h2 class="login-title">后台管理登录</h2>
-        <div class="login-form">
-          <input v-model="username" type="text" placeholder="用户名" class="login-input" @keyup.enter="handleLogin" />
-          <div class="password-input-wrapper">
-            <input
-              v-model="password"
-              :type="showPassword ? 'text' : 'password'"
-              placeholder="密码"
-              class="login-input password-input"
-              @keyup.enter="handleLogin"
-            />
-            <span class="toggle-password" @click="showPassword = !showPassword">
-              <svg v-if="showPassword" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2566d8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>
-              <svg v-else width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2566d8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a21.77 21.77 0 0 1 5.06-6.06"/><path d="M1 1l22 22"/><path d="M9.53 9.53A3 3 0 0 0 12 15a3 3 0 0 0 2.47-5.47"/></svg>
-            </span>
-          </div>
-          <div class="login-buttons">
-            <button @click="goHome" class="back-btn">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M19 12H5M12 19l-7-7 7-7"/>
-              </svg>
-              返回首页
-            </button>
-            <button @click="handleLogin" class="login-btn" :disabled="loading">
-              {{ loading ? '登录中...' : '登录' }}
-            </button>
-          </div>
-          <p v-if="loginError" class="login-error">{{ loginError }}</p>
+  <div v-if="!isLoggedIn" class="login-container">
+    <div class="login-card">
+      <h2 class="login-title">后台管理登录</h2>
+      <div class="login-form">
+        <input v-model="username" type="text" placeholder="用户名" class="login-input" @keyup.enter="handleLogin" />
+        <div class="password-input-wrapper">
+          <input
+            v-model="password"
+            :type="showPassword ? 'text' : 'password'"
+            placeholder="密码"
+            class="login-input password-input"
+            @keyup.enter="handleLogin"
+          />
+          <span class="toggle-password" @click="showPassword = !showPassword">
+            <svg v-if="showPassword" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2566d8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg v-else width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2566d8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a21.77 21.77 0 0 1 5.06-6.06"/><path d="M1 1l22 22"/><path d="M9.53 9.53A3 3 0 0 0 12 15a3 3 0 0 0 2.47-5.47"/></svg>
+          </span>
         </div>
+        <div class="login-buttons">
+          <button @click="goHome" class="back-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            返回首页
+          </button>
+          <button @click="handleLogin" class="login-btn" :disabled="loading">
+            {{ loading ? '登录中...' : '登录' }}
+          </button>
+        </div>
+        <p v-if="loginError" class="login-error">{{ loginError }}</p>
       </div>
     </div>
-
-    <!-- 管理页面主体 -->
+  </div>
+  
+  <div v-else class="admin-layout">
     <aside class="admin-sider" :class="{ open: siderOpen }" @click.self="closeSider">
       <div class="logo clickable" @click="page='welcome'; closeSider()">Admin</div>
       <ul class="menu-list">
@@ -46,10 +44,11 @@
         <li :class="{active: page==='user'}" @click="page='user'; closeSider()">用户管理</li>
       </ul>
     </aside>
-
     <main class="admin-main">
       <div class="admin-header">
-        <button class="menu-toggle" @click="toggleSider">&#9776;</button>
+        <button class="menu-toggle" @click="toggleSider">
+          &#9776;
+        </button>
         <div class="header-title">{{ pageTitle }}</div>
         <div class="header-actions">
           <span class="home-icon" @click="goHome" title="进入主页">
@@ -58,7 +57,6 @@
           <button class="btn logout-btn" @click="logout">退出登录</button>
         </div>
       </div>
-
       <div class="admin-content">
         <div v-if="page==='welcome'" class="welcome-page">
           <h2 class="welcome-title">欢迎您进入 Nav-Item 后台管理系统</h2>
@@ -79,14 +77,12 @@
             </div>
           </div>
         </div>
-
         <MenuManage v-if="page==='menu'" />
         <CardManage v-if="page==='card'" />
         <AdManage v-if="page==='ad'" />
         <FriendLinkManage v-if="page==='friend'" />
         <UserManage v-if="page==='user'" />
       </div>
-
       <footer class="admin-footer">
         <p class="admin-copyright">Copyright © 2025 Nav-Item | <a href="https://github.com/eooce/Nav-Item" target="_blank" class="footer-link">Powered by eooce</a></p>
       </footer>
@@ -106,7 +102,7 @@ import UserManage from './admin/UserManage.vue';
 const page = ref('welcome');
 const lastLoginTime = ref('');
 const lastLoginIp = ref('');
-const isLoggedIn = ref(!!localStorage.getItem('token'));
+const isLoggedIn = ref(false);
 const username = ref('');
 const password = ref('');
 const loading = ref(false);
@@ -125,7 +121,14 @@ const pageTitle = computed(() => {
   }
 });
 
-// 登录时拉取用户信息
+onMounted(() => {
+  const token = localStorage.getItem('token');
+  isLoggedIn.value = !!token;
+  if (isLoggedIn.value) {
+    // 拉取用户信息
+    fetchLastLoginInfo();
+  }
+});
 async function fetchLastLoginInfo() {
   try {
     const res = await fetch('/api/users/me', { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
@@ -133,28 +136,21 @@ async function fetchLastLoginInfo() {
       const data = await res.json();
       lastLoginTime.value = data.last_login_time || '';
       lastLoginIp.value = data.last_login_ip || '';
-    } else if (res.status === 401) {
-      // token 失效
-      logout();
     }
   } catch (error) {
     console.error('获取用户信息失败:', error);
   }
 }
 
-onMounted(() => {
-  if (isLoggedIn.value) fetchLastLoginInfo();
-});
-
 async function handleLogin() {
   if (!username.value || !password.value) {
     loginError.value = '请输入用户名和密码';
     return;
   }
-
+  
   loading.value = true;
   loginError.value = '';
-
+  
   try {
     const response = await login(username.value, password.value);
     if (response.data.token) {
@@ -619,7 +615,4 @@ function closeSider() {
 .menu-toggle {
   display: none;
 }
-
 </style> 
-
-
